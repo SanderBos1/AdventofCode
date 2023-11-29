@@ -1,36 +1,41 @@
-package src.year_2022;
+package src.year_2022.day1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Arrays;
 
-public class day1 {
+public class day1_2 {
 
     private static int loadInput() {
-        int sum = 0;
+
+        int[] sums = { 0, 0, 0 };
 
         try {
-            File myObj = new File("input.txt");
+            File myObj = new File("Inputs/day1Input.txt");
             Scanner myReader = new Scanner(myObj);
             int tempsom = 0;
 
             while (myReader.hasNextLine()) {
 
                 String input = myReader.nextLine();
-                // System.out.println("this is input " + input);
-                // System.out.println("this is input length " + input.length());
 
                 if (input.length() > 0) {
                     tempsom = tempsom + Integer.parseInt(input);
                 } else {
-                    if (tempsom > sum) {
-                        sum = tempsom;
+                    if (tempsom > sums[0]) {
+                        sums[0] = tempsom;
 
                     }
+                    Arrays.sort(sums);
                     tempsom = 0;
 
                 }
 
+            }
+            if (tempsom > sums[0]) {
+                sums[0] = tempsom;
+                Arrays.sort(sums);
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -38,7 +43,8 @@ public class day1 {
             e.printStackTrace();
         }
 
-        return sum;
+        int total_calories = sums[0] + sums[1] + sums[2];
+        return total_calories;
 
     }
 
