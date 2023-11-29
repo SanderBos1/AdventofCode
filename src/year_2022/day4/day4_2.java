@@ -28,7 +28,6 @@ public class day4_2 {
                 values[3] = elfRange1[1];
 
                 Boolean isOverlap = contains(values[0], values[1], values[2], values[3]);
-                System.out.println(isOverlap);
                 if (isOverlap) {
                     sum++;
                 }
@@ -54,11 +53,6 @@ public class day4_2 {
     }
 
     private static boolean contains(int value11, int value12, int value21, int value22) {
-        System.out.println(value11);
-        System.out.println(value12);
-        System.out.println(value21);
-        System.out.println(value22);
-
         if (value11 >= value21 && value11 <= value22) {
             return true;
         } else if (value12 <= value22 && value12 >= value21) {
