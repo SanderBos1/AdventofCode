@@ -26,8 +26,6 @@ def converter(input):
     return input
 
 def determine(seeds, nextLine):
-    
-
     for tuple in nextLine:
         destination = tuple[0]
         source = tuple[1]
