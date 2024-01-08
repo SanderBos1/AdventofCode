@@ -1,0 +1,74 @@
+import numpy as np
+import heapq
+
+def read_input():
+    with open('day17/input.txt') as file:
+        data = []
+        for line in file:
+            temp = line.strip()
+            temp_data = []
+            for character in temp:
+                temp_data.append(int(character))
+            data.append(temp_data)
+    data = np.array(data)
+    return data
+
+def create_auxarrays(data):
+    max_value_row = len(data)
+    max_value_column = len(data[0])
+
+    distmap=np.ones((len(data), len(data[0])),dtype=int)*np.Infinity
+    distmap[0,0]=2
+    visited=np.zeros((max_value_row,max_value_column),dtype=bool)
+    prev_point = [[None for col in row] for row in data]
+
+    return distmap, visited, prev_point
+
+def main():
+    data = read_input()
+    distmap, visited, prev_point= create_auxarrays(data)    
+
+    row, col = 0,0
+    visited[row, col] == True
+    prev_point[row][col] = (0, 0, "right", 0)
+
+    rule = 1
+    min_heap = []
+    directions = [(0, 1, "right"), (1, 0, "left"), (-1, 0, "down")]
+    heapq.heappush(min_heap, (distmap[0][0], 0, 0, rule))
+    number_of_points, visited_count = len(data) * len(data[0]), 0
+    while visited_count < number_of_points:
+        current_point = heapq.heappop(min_heap)
+        distance_from_start, row, col, rule= current_point
+        for direction in directions:
+            new_row, new_col = row + direction[0], col + direction[1]
+            prev_direction = prev_point[row][col]
+            print("this", prev_direction)
+            if prev_direction[2] ==  direction[2] and rule == 3:
+                rule = 0
+                break
+            elif prev_direction[2] == direction[2]:
+                rule +=1
+            else:
+                rule = 0
+            if -1 < new_row < len(data) and -1 < new_col < len(data[0]) and not visited[new_row][new_col]:
+                distance_to_new_point = distance_from_start + data[new_row][new_col]
+                if distance_to_new_point < distmap[new_row][new_col]:
+                    distmap[new_row][new_col] = distance_to_new_point
+                    prev_point[new_row][new_col] = (row, col, direction[2], rule)
+                    heapq.heappush(min_heap,(distance_to_new_point, new_row, new_col, rule))
+            print(visited)
+            print(distmap)
+        visited[row][col] = True
+        visited_count += 1
+
+
+    print(visited)
+    print(distmap)
+    print(prev_point)
+    #right
+   
+
+
+
+print("The final answer is : ", main())
