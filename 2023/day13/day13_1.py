@@ -1,8 +1,7 @@
 import numpy as np
-import collections
 
 def read_input():
-    with open('day13/input.txt') as file:
+    with open('2023/day13/input.txt') as file:
         data = []
         all_data = []
         for line in file:
@@ -59,9 +58,7 @@ def check_mirror(input):
                     break
                 left -= 1
                 right+=1
-                print(right, len(input[i]))
             if(mirror):
-                print(i, i+1)
                 number = i+1
                 return number*100
 
@@ -70,9 +67,10 @@ def main():
     input = read_input()
     for mirror in input:
         temp = np.array(mirror)
-        print(temp)
         sum = sum + check_mirror(temp)
     return sum
+
+
 print("the final solution is: ", main())
 
 

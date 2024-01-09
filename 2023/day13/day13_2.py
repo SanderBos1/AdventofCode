@@ -2,7 +2,7 @@ import numpy as np
 import collections
 
 def read_input():
-    with open('day13/input.txt') as file:
+    with open('2023/day13/input.txt') as file:
         data = []
         all_data = []
         for line in file:

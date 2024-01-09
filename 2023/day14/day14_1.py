@@ -1,9 +1,8 @@
 import numpy as np
 
-
 def readInput():
     data = []
-    with open('day14/input.txt') as file:
+    with open('2023/day14/input.txt') as file:
         for line in file:
             temp = line.strip()
             data.append([x for x in temp])
@@ -26,30 +25,22 @@ def convert_input(input):
                     temp -= 1
     return inputTurned
 
-def readhowmanyO(input):
-    sum_rocks = []
-    for column in input:
-        sum = 0
-        for item in column:
-            if item == "O":
-                sum+=1
-        sum_rocks.append(sum)
-    return sum_rocks
+
 
 def calculateTotalLoad(input):
-    weight = len(input)
     total_weight = 0
     for i in range(len(input)):
-        total_weight = total_weight + input[i]*weight
-        weight -= 1
+        for j in range(len(input[0])):
+            weight = len(input)-i
+            if input[i, j] == "O":
+                total_weight = total_weight+weight
     return total_weight
 
 
 
 input = readInput()
 converted_input = convert_input(input)
-list_howmanyO = readhowmanyO(converted_input)
-total_weight = calculateTotalLoad(list_howmanyO)
+total_weight = calculateTotalLoad(converted_input)
 
 
 print("this is total weight", total_weight)

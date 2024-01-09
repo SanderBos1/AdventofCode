@@ -1,0 +1,112 @@
+import sys
+
+NUM_OF_DIRECTIONS = 4
+FINAL_CYCLE = 1000000000
+
+# Read from file
+with open('2023/day14/input.txt') as f:
+    raw_text = f.read()
+
+# Trim whitespace
+raw_text = raw_text.strip()
+
+#Split into rows
+rows = raw_text.split("\n")
+
+# Notice both the example and input are squares!
+size = len(rows)
+
+#Splt each row into elements so we can mutate
+grid = [list(row) for row in rows]
+
+def display(grid):
+    for row in grid:
+        print("".join(row))
+
+def rock_fall(g, x, y):
+
+    # Make sure we're looking at a rock
+    assert g[y][x] == "O"
+
+    # Clear the rock, we'll place it later
+    g[y][x] = '.'
+
+    # Scan up all the spot up to the edge of the board
+    for rock_y in range(y, -1, -1):
+        
+        # Check if the space isn't empty 
+        if g[rock_y][x] != '.':
+            # Back up one
+            rock_y += 1
+            # And exit early
+            break
+
+    g[rock_y][x] = 'O'
+
+# Initialize our memories for cycles
+
+# We're going to toss in a placeholder since we never calculate the zero-th cycle
+loadings = [None]
+
+board_states_seen = {}
+cycle_index = 0
+
+while True:
+
+    # Rock fall north, east, south, west
+    for direction in range(NUM_OF_DIRECTIONS):
+
+        # Scan the rocks, make sure to scan from top to bottom when shifting rocks
+        for x in range(size):
+            for y in range(size):
+
+                # When we find a rock, apply the rock fall method to shift it
+                if grid[y][x] == 'O':
+                    rock_fall(grid, x, y)
+
+        # Rotate the grid 90 degress
+        grid = [list(row) for row in zip(*grid[::-1])]
+
+    # Scan the grid again to calculate load
+    total_load = 0
+    for x in range(size):
+        for y in range(size):
+
+            # Add any found rocks to the load
+            if grid[y][x] == 'O':
+                total_load += (size - y)
+
+    # Calculate ow many cycles have we done?
+    cycle_index += 1
+    
+    # Remember the loadings
+    loadings.append(total_load)
+
+    # Get an immutatble board state
+    board_state = "".join(["".join(row) for row in grid])
+
+    # Check if we've seen this state before
+    if board_state in board_states_seen:
+
+        # We've seen this state before
+        end_cycle = cycle_index
+        start_cycle = board_states_seen[board_state]
+
+        # Do some math
+        loop_size = end_cycle - start_cycle
+        final_cycle_match = ((FINAL_CYCLE - start_cycle) % loop_size) + start_cycle
+
+        # Look up the loading we calculated
+        final_loading = loadings[final_cycle_match]
+        
+        print(start_cycle, end_cycle, loop_size, final_cycle_match, final_loading)
+
+        # What was that loading?
+        print(">>>", final_loading, "<<<")
+
+        # Early exit
+        sys.exit(0)
+
+    else:
+        # We haven't seen this state before. Remember for later
+        board_states_seen[board_state] = cycle_index
