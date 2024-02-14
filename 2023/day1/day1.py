@@ -1,19 +1,19 @@
-import re 
+import re
 
 def day1_1():
-    with open('2023/day1/input.txt') as file:
-        sum = 0
+    with open('2023/day1/input.txt', encoding="utf-8") as file:
+        value_sum = 0
         for line in file:
             line = re.findall(r"\d", line)
-            calibrationValue = line[0]+line[-1]
-            value = int(calibrationValue)
-            sum = sum + value
-    return sum
+            calibration_value = line[0]+line[-1]
+            value = int(calibration_value)
+            value_sum = value_sum + value
+    return value_sum
 
 def day1_2():
 
-    with open('2023/day1/input.txt') as file:
-        sum = 0
+    with open('2023/day1/input.txt', encoding="utf-8") as file:
+        value_sum = 0
         #need first and last letter with letters that can be combined
         help_dictionary  = {
         "one": "o1e",
@@ -30,10 +30,10 @@ def day1_2():
             for k, v in help_dictionary.items():
                 line = line.replace(k, v)
             line = re.findall(r"\d", line)
-            calibrationValue = line[0]+line[-1]
-            value = int(calibrationValue)
-            sum = sum + value
-    return sum
+            calibration_value = line[0]+line[-1]
+            value = int(calibration_value)
+            value_sum = value_sum + value
+    return value_sum
 
 
 print("Answer of part 1 is: ", day1_1())
